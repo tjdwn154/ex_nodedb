@@ -24,11 +24,7 @@
     <%- include('nav.html') %>
 
     <h3 class="text-center ml-2 my-3">List Main</h3>
-    <!-- <% for(var i = 0; i < posts.length; i++){ %>
-    <h4>할 일 : <%=posts[i].할일 %></h4>
-    <p>등록일 : <%=posts[i].등록일 %></p>
-    <button>삭제</button>
-    <% } %> -->
+
     <div class="container">
       <ul class="list-group">
         <% for(var i = 0; i < posts.length; i++){ %>
@@ -36,12 +32,16 @@
           <p>글번호 : <%= posts[i]._id %></p>
           <h4>제목 : <%=posts[i].제목 %></h4>
           <p>등록일 : <%=posts[i].등록일 %></p>
+          <div class="box">
+          <p class="content">내용 : <%=posts[i].내용 %></p>
+          </div>
+          <a class="btn btn-light " href='http://localhost:8080/edit/<%= posts[i]._id %>'>수정</a>
+          <a class="btn btn-light " href='http://localhost:8080/detail/<%= posts[i]._id %>'>내용확인</a>
           <button class="btn btn-danger delete" data-id="<%= posts[i]._id %>">삭제</button>
         </li>
         <% } %>
       </ul>
     </div>
-
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>

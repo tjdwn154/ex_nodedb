@@ -2,3 +2,19 @@ body{
     background-color:#e3f2fd;
     font-family: 'nanumsquare';
 }
+
+/* list.ejs */
+.box{
+    width:400px;
+    padding: 4px;
+}
+
+.content{
+    display: inline-block;
+  width: 500px;
+  padding: 10px;
+  border: 1px solid #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
