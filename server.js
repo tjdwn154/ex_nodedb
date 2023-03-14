@@ -39,13 +39,13 @@ app.get("/write", checklogin, function (요청, 응답) {
 
 // /add로 post 요청하면 DB의 총게시물갯수 데이터를 가져와서 _id에 총게시물갯수+1으로 새로운 데이터를 post라는 컬렉션에 저장
 app.post("/add", function (요청, 응답) {
-  응답.render('list.ejs');
+  응답.send('완료. 확인해주시기바랍니다.');
   db.collection('counter').findOne({name : '게시물갯수'},function(에러, 결과){
     var 총게시물갯수 = 결과.totalPost;
     
     //post라는 컬렉션에 id,제목,등록일 기록
     db.collection("post").insertOne(
-      { _id: 총게시물갯수 + 1, 제목: 요청.body.title, 등록일: 요청.body.date, 내용: 요청.body.contents },
+      { _id: 총게시물갯수 + 1, 제목: 요청.body.title, 등록일: 요청.body.date, 내용: 요청.body.contents, 시각: 요청.body.contentimg},
       function (에러, 결과) {
         console.log("전송 완료");
         //counter라는 컬렉션에 있는 totalPost 라는 항목을 1증가
@@ -98,7 +98,7 @@ app.get("/edit/:id", checklogin, function (요청, 응답) {
 app.put("/edit", checklogin, function (요청, 응답) {
   db.collection("post").updateOne(
     { _id: parseInt(요청.body.id) },
-    { $set: { 제목: 요청.body.title, 등록일: 요청.body.date, 내용: 요청.body.contents } },
+    { $set: { 제목: 요청.body.title, 등록일: 요청.body.date, 내용: 요청.body.contents, 시각: 요청.body.contentimg } },
     function () {
       console.log("수정완료");
       응답.redirect("/list");
@@ -113,7 +113,7 @@ app.get('/login',function(요청, 응답){
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/mypage",
+    successRedirect: "/",
     failureRedirect: "/fail",
   }));
 
@@ -154,11 +154,6 @@ passport.use(new LocalStrategy({
 
 app.get('/fail', function(요청, 응답){
   응답.render('loginfail.ejs')
-})
-
-app.get('/mypage', checklogin, function(요청, 응답){
-  console.log(요청.user)
-  응답.render('mypage.ejs', {사용자 : 요청.user})
 })
 
 function checklogin(요청, 응답, next){
