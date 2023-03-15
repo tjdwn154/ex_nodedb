@@ -2,5 +2,4 @@
 
 
 # dfd
-
-![nodedemo1](https://user-images.githubusercontent.com/84662018/225206032-db13cd4c-3f81-4473-ab05-ddf6ce67e574.gif)
+![nodedemo1 png](https://user-images.githubusercontent.com/84662018/225206116-0252dcb5-e9a4-4122-acc5-0bb8e0d72772.gif)
