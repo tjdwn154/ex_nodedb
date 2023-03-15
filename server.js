@@ -13,18 +13,18 @@ const session = require('express-session');
 app.use(session({ secret: "비밀코드", resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+require('dotenv').config();
 
 var db;
 
-MongoClient.connect(
-  "mongodb+srv://admin:tjdwnrk154@cluster0.iezb1as.mongodb.net/?retryWrites=true&w=majority",
+MongoClient.connect(process.env.DB_URL,
   function (에러, client) {
     if(에러){
       return console.log(에러)
     }
     db = client.db('todoapp');
 
-    app.listen(8080, function () {
+    app.listen(process.env.PORT, function () {
       console.log("listening on 8080");
     });
   });
@@ -62,6 +62,26 @@ app.get('/list', checklogin, function(요청, 응답){
   db.collection("post").find().toArray(function(에러, 결과){
       응답.render("list.ejs", { posts: 결과 });
   }); 
+})
+
+//검색
+app.get('/search', (요청, 응답)=>{
+  var search_ad = [
+    {
+      $search: {
+        index: 'titleSearch',
+        text: {
+          query: 요청.query.value,
+          path: '제목'
+        }
+      }
+    },
+    //검색결과를 DB의 id순으로 정렬
+    { $sort : { _id: 1}}
+  ]
+  db.collection('post').aggregate(search_ad).toArray(function(에러,결과){
+    응답.render('search.ejs', {posts : 결과})
+  })
 })
 
 app.delete('/delete', checklogin, function(요청, 응답){
