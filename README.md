@@ -2,7 +2,7 @@
 
 
 ## 메인화면
-![nodedemo1](https://user-images.githubusercontent.com/84662018/225206399-7b59c2e9-0c63-41a5-bca7-94841bc42e20.PNG)
+![image](https://user-images.githubusercontent.com/84662018/226240914-19d5f6b6-04ae-4462-a5e4-60f53171235c.png)
 간단한 자기소개글
 
 ## system
