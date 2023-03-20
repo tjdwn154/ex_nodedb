@@ -59,7 +59,6 @@
     <script>
       $(".delete").click(function (e) {
         var 글번호 = e.target.dataset.id;
-        var 지금누른거 = $(this);
 
         //삭제버튼을 클릭한 요소의 data-id
         $.ajax({
@@ -69,7 +68,7 @@
         })
           .done(function (결과) {
             console.log("완료되었습니다.");
-            지금누른거.parent("li").fadeOut();
+            this.parent("li").fadeOut();
           })
           .fail(function (xhr, textStatus, errorThrown) {
             console.log(xhr, textStatus, errorThrown);
