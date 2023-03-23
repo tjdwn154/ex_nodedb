@@ -39,13 +39,15 @@ app.get("/write", checklogin, function (req, res) {
 
 // /add로 post req하면 DB의 총게시물갯수 데이터를 가져와서 _id에 총게시물갯수+1으로 새로운 데이터를 post라는 컬렉션에 저장
 app.post("/add", function (req, res) {
-  res.send('완료. 확인해주시기바랍니다.');
+  res.send(
+    "<script>alert('등록되었습니다.');location.href='/list';</script>"
+  );
   db.collection('counter').findOne({name : '게시물갯수'},function(err, data){
     var 총게시물갯수 = data.totalPost;
     
     //post라는 컬렉션에 id,제목,등록일 기록
     db.collection("post").insertOne(
-      { _id: 총게시물갯수 + 1, 제목: req.body.title, 등록일: req.body.date, 내용: req.body.contents, 시각: req.body.contentimg},
+      { _id: 총게시물갯수 + 1, 제목: req.body.title, 등록일: req.body.date, 내용: req.body.contents, 주소: req.body.contentimg},
       function (err, data) {
         console.log("전송 완료");
         //counter라는 컬렉션에 있는 totalPost 라는 항목을 1증가
@@ -100,7 +102,7 @@ app.get('/detail/:id', checklogin, function (req, res) {
         res.render("detail.ejs", { data: data });
       }
       else{
-        res.status(404).send("<h1>req한 데이터는 없습니다.</h1>");
+        res.status(404).send("<h1>요청한 데이터는 없습니다.</h1>");
       }
     })
 });
@@ -118,7 +120,7 @@ app.get("/edit/:id", checklogin, function (req, res) {
 app.put("/edit", checklogin, function (req, res) {
   db.collection("post").updateOne(
     { _id: parseInt(req.body.id) },
-    { $set: { 제목: req.body.title, 등록일: req.body.date, 내용: req.body.contents, 시각: req.body.contentimg } },
+    { $set: { 제목: req.body.title, 등록일: req.body.date, 내용: req.body.contents, 주소: req.body.contentimg } },
     function () {
       console.log("수정완료");
       res.redirect("/list");
@@ -173,7 +175,9 @@ passport.use(new LocalStrategy({
     })
 
 app.get('/fail', function(req, res){
-  res.render('loginfail.ejs')
+  res.send(
+    "<script>alert('정보를 다시 확인 부탁드립니다.');location.href='/login';</script>"
+  );
 })
 
 function checklogin(req, res, next){
@@ -198,6 +202,8 @@ app.post('/register', function(req, res){
         res.render('index.ejs', {정보 : req.user})
       });
     } else {
-      res.send( {message: '이미 존재합니다.'} );
+      res.send(
+        "<script>alert('이미 가입된 아이디입니다.');location.href='/register';</script>"
+      );
     }})
 })
